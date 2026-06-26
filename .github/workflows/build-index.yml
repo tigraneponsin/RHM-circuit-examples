@@ -1,0 +1,38 @@
+name: Build circuit index
+
+# Regenerates circuits.js from the folder tree whenever circuits change.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "circuits/**"
+      - "build_index.py"
+  workflow_dispatch: {}   # allow manual runs from the Actions tab
+
+permissions:
+  contents: write          # needed to commit circuits.js back to the repo
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate circuits.js
+        run: python3 build_index.py
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- circuits.js; then
+            echo "circuits.js already up to date."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add circuits.js
+            git commit -m "chore: regenerate circuits.js [skip ci]"
+            git push
+          fi
