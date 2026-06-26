@@ -44,5 +44,50 @@ window.CIRCUITS = [
     "L": 3,
     "stream": "non-residual",
     "title": "circuit ex4"
+  },
+  {
+    "file": "circuits/v16_m16_s2_L3/residual/circuit_ex0.html",
+    "v": 16,
+    "m": 16,
+    "s": 2,
+    "L": 3,
+    "stream": "residual",
+    "title": "circuit ex0"
+  },
+  {
+    "file": "circuits/v16_m16_s2_L3/residual/circuit_ex1.html",
+    "v": 16,
+    "m": 16,
+    "s": 2,
+    "L": 3,
+    "stream": "residual",
+    "title": "circuit ex1"
+  },
+  {
+    "file": "circuits/v16_m16_s2_L3/residual/circuit_ex2.html",
+    "v": 16,
+    "m": 16,
+    "s": 2,
+    "L": 3,
+    "stream": "residual",
+    "title": "circuit ex2"
+  },
+  {
+    "file": "circuits/v16_m16_s2_L3/residual/circuit_ex3.html",
+    "v": 16,
+    "m": 16,
+    "s": 2,
+    "L": 3,
+    "stream": "residual",
+    "title": "circuit ex3"
+  },
+  {
+    "file": "circuits/v16_m16_s2_L3/residual/circuit_ex4.html",
+    "v": 16,
+    "m": 16,
+    "s": 2,
+    "L": 3,
+    "stream": "residual",
+    "title": "circuit ex4"
   }
 ];
