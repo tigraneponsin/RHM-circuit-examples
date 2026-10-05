@@ -36,7 +36,17 @@
 <body>
   <div class="wrap">
     <h1>Circuit Tracing Library</h1>
-    <p class="sub">Attribution-graph visualizations for transformers on the Random Hierarchy Model, organized by RHM config and stream.</p>
+    <p class="sub">These are attribution graphs ("circuits") traced through small transformers trained to classify the root of the Random Hierarchy Model (RHM), a synthetic grammar in which every input sequence is generated from a hidden tree of latent variables. Because that tree is known, each sparse autoencoder (SAE) feature can be labeled automatically, and each recovered circuit can be checked against the tree that actually produced the input.
+
+   How to read a circuit page. Left: the pruned circuit, from token embeddings (bottom) through one SAE per transformer block to the predicted class (top). A feature's ring color is the RHM level it is labeled with; a green fill means it is highly selective for that latent. Below it, the same circuit after features are automatically grouped. Right: the ground-truth tree for this input. Sliders control the pruning thresholds and the labeling scheme.
+
+   Illustrative examples:
+   • Recovered tree (no residual connections): [link to circuits/v16_m16_s2_L3/nores/circuit_ex1.html]. Set the labeling scheme to "reassigned", node threshold 0.80, edge threshold 0.90. Switching the scheme to "parent" shows the mislabeled features that motivated the other labeling schemes.
+   • With residual connections: [link to circuits/v16_m16_s2_L3/residual/circuit_ex0.html]. Set node threshold 0.90, edge threshold 0.98, scheme "reassigned". The structure stays close to the tree, but some features keep off-level labels.
+
+   Configurations: v = vocabulary size per level, m = number of synonymous productions per symbol, s = branching factor, L = depth. "non-residual" / "residual" = transformer without / with skip connections.
+
+   Method and full results: Mechanistic Interpretability with Known Ground Truth: Benchmarking Sparse Autoencoders on the Random Hierarchy Model, internship report [link to https://github.com/tigraneponsin/SAE-on-RHM].</p>
 
     <div class="filters" id="filters"></div>
     <p class="count" id="count"></p>
