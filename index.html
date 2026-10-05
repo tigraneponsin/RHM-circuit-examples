@@ -31,33 +31,48 @@
     .empty { color: var(--muted); padding: 30px 0; }
     footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
     code { background: #eee; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+    .intro { padding: 18px 20px; margin: 0 0 20px; background: #fff; border: 1px solid var(--line); border-radius: 10px; font-size: 14.5px; }
+    .intro p { margin: 0 0 12px; }
+    .intro h2 { font-size: 15px; margin: 16px 0 6px; }
+    .intro a { color: var(--accent); }
+    .intro ul.examples { list-style: disc; padding-left: 20px; margin: 0 0 12px; }
+    .intro ul.examples li { border: none; background: none; margin: 0 0 8px; border-radius: 0; box-shadow: none; }
+    .intro ul.examples li:hover { border: none; box-shadow: none; }
+    .intro .note { font-size: 13px; color: var(--muted); }
+    .intro .note:last-child { margin-bottom: 0; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <h1>Circuit Tracing Library</h1>
-    <p class="sub">These are attribution graphs ("circuits") traced through small transformers trained to classify the root of the Random Hierarchy Model (RHM), a synthetic grammar in which every input sequence is generated from a hidden tree of latent variables. Because that tree is known, each sparse autoencoder (SAE) feature can be labeled automatically, and each recovered circuit can be checked against the tree that actually produced the input.
-
-   How to read a circuit page. Left: the pruned circuit, from token embeddings (bottom) through one SAE per transformer block to the predicted class (top). A feature's ring color is the RHM level it is labeled with; a green fill means it is highly selective for that latent. Below it, the same circuit after features are automatically grouped. Right: the ground-truth tree for this input. Sliders control the pruning thresholds and the labeling scheme.
-
-   Illustrative examples:
-   • Recovered tree (no residual connections): [link to circuits/v16_m16_s2_L3/nores/circuit_ex1.html]. Set the labeling scheme to "reassigned", node threshold 0.80, edge threshold 0.90. Switching the scheme to "parent" shows the mislabeled features that motivated the other labeling schemes.
-   • With residual connections: [link to circuits/v16_m16_s2_L3/residual/circuit_ex0.html]. Set node threshold 0.90, edge threshold 0.98, scheme "reassigned". The structure stays close to the tree, but some features keep off-level labels.
-
-   Configurations: v = vocabulary size per level, m = number of synonymous productions per symbol, s = branching factor, L = depth. "non-residual" / "residual" = transformer without / with skip connections.
-
-   Method and full results: Mechanistic Interpretability with Known Ground Truth: Benchmarking Sparse Autoencoders on the Random Hierarchy Model, internship report [link to https://github.com/tigraneponsin/SAE-on-RHM].</p>
-
+    <p class="sub">Attribution graphs for transformers trained on the Random Hierarchy Model, compared against the ground-truth generative tree.</p>
+ 
+    <section class="intro">
+      <p>These are attribution graphs (&ldquo;circuits&rdquo;) traced through small transformers trained to classify the root of the <strong>Random Hierarchy Model</strong> (RHM), a synthetic grammar in which every input sequence is generated from a hidden tree of latent variables. Because that tree is known, each sparse autoencoder (SAE) feature can be labeled automatically, and each recovered circuit can be checked against the tree that actually produced the input.</p>
+ 
+      <h2>How to read a circuit page</h2>
+      <p><strong>Left:</strong> the pruned circuit, from token embeddings (bottom) through one SAE per transformer block to the predicted class (top). A feature&rsquo;s ring color is the RHM level it is labeled with; a green fill means it is highly selective for that latent. Below it, the same circuit after features are automatically grouped. <strong>Right:</strong> the ground-truth tree for this input. Sliders control the pruning thresholds and the labeling scheme.</p>
+ 
+      <h2>Illustrative examples</h2>
+      <ul class="examples">
+        <li><a href="circuits/v16_m16_s2_L3/nores/circuit_ex1.html" target="_blank" rel="noopener">Recovered tree (no residual connections)</a>: set the labeling scheme to &ldquo;reassigned&rdquo;, node threshold 0.80, edge threshold 0.90. Switching the scheme to &ldquo;parent&rdquo; shows the mislabeled features that motivated the other labeling schemes.</li>
+        <li><a href="circuits/v16_m16_s2_L3/residual/circuit_ex0.html" target="_blank" rel="noopener">With residual connections</a>: set node threshold 0.90, edge threshold 0.98, scheme &ldquo;reassigned&rdquo;. The structure stays close to the tree, but some features keep off-level labels.</li>
+      </ul>
+ 
+      <p class="note"><strong>Configurations:</strong> <em>v</em> = vocabulary size per level, <em>m</em> = number of synonymous productions per symbol, <em>s</em> = branching factor, <em>L</em> = depth. &ldquo;non-residual&rdquo; / &ldquo;residual&rdquo; = transformer without / with skip connections.</p>
+ 
+      <p class="note"><strong>Method and full results:</strong> <a href="https://github.com/tigraneponsin/SAE-on-RHM/blob/main/Report_EPFL.pdf" target="_blank" rel="noopener"><em>Mechanistic Interpretability with Known Ground Truth: Benchmarking Sparse Autoencoders on the Random Hierarchy Model</em></a> (internship report) &middot; <a href="https://github.com/tigraneponsin/SAE-on-RHM" target="_blank" rel="noopener">code</a></p>
+    </section>
+ 
     <div class="filters" id="filters"></div>
     <p class="count" id="count"></p>
     <div id="groups"></div>
-
+ 
     <footer>
-      Data is generated from the folder tree by <code>build_index.py</code> into <code>circuits.js</code>.
-      Add a circuit: drop it in <code>circuits/v{v}_m{m}_s{s}_L{L}/{residual|nores}/</code>, re-run the script, commit.
+      Report &amp; code: <a href="https://github.com/tigraneponsin/SAE-on-RHM" target="_blank" rel="noopener">github.com/tigraneponsin/SAE-on-RHM</a>
     </footer>
   </div>
-
+ 
   <!-- Generated data: window.CIRCUITS = [...] -->
   <script src="circuits.js"></script>
   <script>
@@ -65,14 +80,14 @@
     const groupsEl = document.getElementById("groups");
     const countEl = document.getElementById("count");
     const filtersEl = document.getElementById("filters");
-
+ 
     const state = { v: "", m: "", L: "", stream: "" };
-
+ 
     function distinct(key) {
       return [...new Set(ALL.map(c => c[key]))].sort((a, b) =>
         typeof a === "number" ? a - b : String(a).localeCompare(String(b)));
     }
-
+ 
     function makeFilter(key, label) {
       const wrap = document.createElement("label");
       wrap.textContent = label;
@@ -83,28 +98,28 @@
       wrap.appendChild(sel);
       filtersEl.appendChild(wrap);
     }
-
+ 
     function configKey(c) { return `v${c.v}_m${c.m}_s${c.s}_L${c.L}`; }
     function configLabel(c) { return `v=${c.v}, m=${c.m}, s=${c.s}, L=${c.L}`; }
-
+ 
     function render() {
       const sel = ALL.filter(c =>
         (!state.v || String(c.v) === state.v) &&
         (!state.m || String(c.m) === state.m) &&
         (!state.L || String(c.L) === state.L) &&
         (!state.stream || c.stream === state.stream));
-
+ 
       countEl.textContent = `${sel.length} of ${ALL.length} circuit(s)`;
       groupsEl.innerHTML = "";
-
+ 
       if (!sel.length) {
         groupsEl.innerHTML = '<p class="empty">No circuits match these filters.</p>';
         return;
       }
-
+ 
       const groups = {};
       for (const c of sel) (groups[configKey(c)] ??= []).push(c);
-
+ 
       for (const key of Object.keys(groups).sort()) {
         const items = groups[key];
         const g = document.createElement("div");
@@ -123,7 +138,7 @@
         groupsEl.appendChild(g);
       }
     }
-
+ 
     makeFilter("v", "v");
     makeFilter("m", "m");
     makeFilter("L", "L");
